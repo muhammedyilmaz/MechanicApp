@@ -1,0 +1,109 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <form autocomplete="off" #createRoleForm="ngForm">
+          <div class="card">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-md-6">
+                  <h5>
+                    <button
+                      mat-icon-button
+                      type="button"
+                      [disabled]="saving"
+                      (click)="close()"
+                    >
+                      <mat-icon>keyboard_backspace</mat-icon>
+                    </button>
+                    {{ "CreateNewRole" | localize }}
+                  </h5>
+                </div>
+                <div class="col-md-6 text-right">
+                  <button
+                    mat-stroked-button="primary"
+                    (click)="save('Save')"
+                    [disabled]="!createRoleForm.form.valid || saving"
+                  >
+                    <i class="fa fa-save"></i> {{ "Save" | localize }}
+                  </button>
+                  <button
+                    mat-stroked-button="primary"
+                    (click)="save('SaveAndContunie')"
+                    [disabled]="!createRoleForm.form.valid || saving"
+                  >
+                    <i class="fa fa-save"></i>
+                    {{ "SaveAndContunie" | localize }}
+                  </button>
+                  <button
+                    mat-stroked-button="primary"
+                    (click)="save('SaveAndNew')"
+                    [disabled]="!createRoleForm.form.valid || saving"
+                  >
+                    <i class="fa fa-save"></i> {{ "SaveAndNew" | localize }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-tab-group>
+                    <mat-tab [label]="'RoleDetails' | localize">
+                      <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                          <mat-form-field>
+                            <input
+                              matInput
+                              name="Name"
+                              [placeholder]="'Name' | localize"
+                              [(ngModel)]="role.name"
+                              required
+                              minlength="2"
+                              maxlength="32"
+                            />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                          <mat-form-field>
+                            <input
+                              matInput
+                              name="DisplayName"
+                              [placeholder]="'DisplayName' | localize"
+                              [(ngModel)]="role.displayName"
+                              required
+                              minlength="2"
+                              maxlength="32"
+                            />
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                          <mat-form-field>
+                            <textarea
+                              matInput
+                              name="Description"
+                              [placeholder]="'RoleDescription' | localize"
+                              [(ngModel)]="role.description"
+                            ></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </mat-tab>
+                    <mat-tab [label]="'Permissions' | localize">
+                      <div class="row">
+                        <div class="col-md-3 col-sm-12">
+                          <div class="checkbox-wrapper">
+                            <permission-tree #permissionTree></permission-tree>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                </div>
+              </div>
+            </div>
+          </div>
+    </form>
+  </div>
+</div>

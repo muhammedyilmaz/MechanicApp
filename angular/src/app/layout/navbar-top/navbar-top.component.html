@@ -1,0 +1,62 @@
+
+   
+   <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark">
+     <a routerLink="/app/home" class="navbar-brand"><i class="fa fa-cube"></i> MyProject</a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>
+   
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       <ul class="navbar-nav mr-auto">
+
+        <ng-template ngFor let-menuItem [ngForOf]="menuItems" let-mainMenuItemIndex="index">
+
+
+         <li *ngIf="showMenuItem(menuItem)" routerLinkActive="active" class="dropdown">
+         <!-- route name -->
+        <a class="nav-link" [routerLink]="[menuItem.route]" *ngIf="!menuItem.items.length && menuItem.route.indexOf('http') != 0">
+          <i *ngIf="menuItem.icon" class="fa {{menuItem.icon}}"></i>
+          {{menuItem.name}}
+          <span class="sr-only">(current)</span>
+          </a>
+
+          <!-- Static link (starts with 'http') -->
+          <a class="nav-link" href="{{menuItem.route}}" target="_blank" *ngIf="!menuItem.items.length && menuItem.route.indexOf('http') == 0">>
+          <i *ngIf="menuItem.icon" class="fa {{menuItem.icon}}"></i>
+          {{menuItem.name}}
+          </a>
+
+          <!-- Has child menu items (so, this is a parent menu) -->
+          <a class="nav-link dropdown-toggle " *ngIf="menuItem.items.length" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa {{menuItem.icon}}" *ngIf="menuItem.icon"></i>
+            {{menuItem.name}}
+          </a> 
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menuItem.items.length">
+            <ng-template ngFor let-subMenuItem [ngForOf]="menuItem.items" let-mainMenuItemIndex="index">
+               <!-- route name -->
+               <a [routerLink]="[subMenuItem.route]" class="dropdown-item" *ngIf="!subMenuItem.items.length && subMenuItem.route.indexOf('http') != 0">
+                <i *ngIf="subMenuItem.icon" class="fa {{subMenuItem.icon}}"></i>
+                {{subMenuItem.name}}
+            </a>
+            <!-- Static link (starts with 'http') -->
+            <a href="{{subMenuItem.route}}" class="dropdown-item " target="_blank" *ngIf="!subMenuItem.items.length && subMenuItem.route.indexOf('http') == 0">
+                <i *ngIf="subMenuItem.icon" class="fa {{subMenuItem.icon}}"></i>
+                {{subMenuItem.name}}
+            </a>
+            </ng-template>
+           
+          </div>
+         </li>
+        </ng-template>
+       </ul>
+       
+       <app-navbar-top-right></app-navbar-top-right>
+       
+       <!-- <form class="form-inline my-2 my-lg-0">
+         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+       </form> -->
+     </div>
+   </nav>
+   
+

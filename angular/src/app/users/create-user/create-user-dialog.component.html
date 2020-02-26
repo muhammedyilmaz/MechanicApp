@@ -1,0 +1,108 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <form  autocomplete="off" #createUserModal="ngForm" (ngSubmit)="save()">
+       <div class="card">
+                  <div class="card-header">
+                      <div class="row">
+                        <div class="col-md-6">
+                              <h5>
+                                <button mat-icon-button type="button" [disabled]="saving" (click)="close()">
+                                  <mat-icon>keyboard_backspace</mat-icon>
+                                </button> {{ "CreateNewUser" | localize }}</h5>
+                          </div>
+                          
+                        <div class="col-md-6 text-right">
+                          <button mat-stroked-button="primary"  (click)="save('Save')" [disabled]="!createUserModal.form.valid || saving">
+                            <i class="fa fa-save"></i> {{ "Save" | localize }}
+                          </button>
+                          <button  mat-stroked-button="primary" (click)="save('SaveAndContunie')" [disabled]="!createUserModal.form.valid || saving">
+                            <i class="fa fa-save"></i>  {{ "SaveAndContunie" | localize }}
+                          </button>
+                          <button  mat-stroked-button="primary" (click)="save('SaveAndNew')" [disabled]="!createUserModal.form.valid || saving">
+                            <i class="fa fa-save"></i>  {{ "SaveAndNew" | localize }}
+                          </button>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <mat-tab-group>
+                              <mat-tab [label]="'UserDetails' | localize">
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput name="UserName" [placeholder]="'UserName' | localize" [(ngModel)]="user.userName" required
+                                        minlength="2" maxlength="32" />
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput name="Name" [placeholder]="'Name' | localize" [(ngModel)]="user.name" required
+                maxlength="32" />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput #password="ngModel" [placeholder]="'Password' | localize" [(ngModel)]="user.password"
+                type="password" name="password" id="password" validateEqual="confirmPassword" reverse="true" required
+                maxlength="32" />
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput [placeholder]="'ConfirmPassword' | localize" ngModel type="password"
+                name="confirmPassword" id="confirmPassword" validateEqual="password" reverse="false" required
+                maxlength="32" />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput name="EmailAddress" [placeholder]="'EmailAddress' | localize"
+                                        [(ngModel)]="user.emailAddress" type="email" required maxlength="256"
+                                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$" />
+                                    </mat-form-field>
+                                  </div>
+                                  <div class="col-md-6 col-sm-12">
+                                    <mat-form-field>
+                                      <input matInput name="Surname" [placeholder]="'Surname' | localize" [(ngModel)]="user.surname" required
+                                        maxlength="32" />
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-12">
+                                    <div class="checkbox-wrapper">
+                                      <mat-checkbox name="IsActive" [(ngModel)]="user.isActive">
+                                        {{ "IsActive" | localize }}
+                                      </mat-checkbox>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-tab>
+                              <mat-tab [label]="'UserRoles' | localize">
+                                <div class="row">
+                                  <ng-template ngFor let-role [ngForOf]="roles">
+                                    <div class="col-md-6 col-sm-12">
+                                      <div class="checkbox-wrapper">
+                                        <mat-checkbox [checked]="isRoleChecked(role.normalizedName)" (change)="onRoleChange(role, $event)">
+                                          {{ role.name }}
+                                        </mat-checkbox>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                </div>
+                              </mat-tab>
+                            </mat-tab-group>
+                          </div>
+                        </div>
+                  </div>
+       </div>
+    </form>
+  </div>
+</div>

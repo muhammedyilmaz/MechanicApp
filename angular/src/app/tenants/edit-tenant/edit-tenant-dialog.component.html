@@ -1,0 +1,95 @@
+
+<div class="row">
+  <div class="col-md-12">
+   <form  autocomplete="off" #editTenantForm="ngForm">
+
+              <div class="card">
+                  <div class="card-header">
+                      <div class="row">
+                        <div class="col-md-6">
+                              <h5>
+                                <button mat-icon-button type="button" [disabled]="saving" (click)="close()">
+                                  <mat-icon>keyboard_backspace</mat-icon>
+                                </button>
+                                 <span *ngIf="action == 'edit'">{{ "EditTenant" | localize }} - {{ editTitle }}</span>
+                                 <span *ngIf="action == 'view'">{{ "ViewTenant" | localize }} - {{ editTitle }}</span>
+                                </h5> 
+                          </div>
+                          
+                        <div class="col-md-6 text-right" *ngIf="action=='edit'">
+                          <button mat-stroked-button="primary"  (click)="save('Save')" [disabled]="!editTenantForm.form.valid || saving">
+                            <i class="fa fa-save"></i> {{ "Save" | localize }}
+                          </button>
+                          <button  mat-stroked-button="primary" (click)="save('SaveAndContunie')" [disabled]="!editTenantForm.form.valid || saving">
+                            <i class="fa fa-save"></i>  {{ "SaveAndContunie" | localize }}
+                          </button>
+                          <button mat-stroked-button="danger" *ngIf="isGranted('Tenant.Delete')"  (click)="delete()">
+                            <i class="fa fa-trash"></i>  {{ "Delete" | localize }}
+                          </button>
+                        </div>
+                        <div class="col-md-6 text-right" *ngIf="action=='view' && isGranted('Tenant.Edit')">
+                          <button
+                          mat-stroked-button="primary"
+                          [routerLink]="['/app/tenants/edit', id]"
+                          >
+                          <i class="fa fa-edit"></i> {{ "Edit" | localize }}
+                        </button>
+        
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-12">
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+
+                                    <mat-form-field>
+                                      <input
+                                        matInput
+                                        name="TenancyName"
+                                        [placeholder]="'TenancyName' | localize"
+                                        [(ngModel)]="tenant.tenancyName"
+                                        required
+                                        minlength="2"
+                                        maxlength="64"
+                                      />
+                                    </mat-form-field>
+                                   
+                                  </div>
+                                  <div class="col-md-6 col-sm-12">
+
+                                    <mat-form-field>
+                                      <input
+                                        matInput
+                                        name="Name"
+                                        [placeholder]="'Name' | localize"
+                                        [(ngModel)]="tenant.name"
+                                        required
+                                        maxlength="128"
+                                      />
+                                    </mat-form-field>
+
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6 col-sm-12">
+
+                                    <div class="checkbox-wrapper">
+                                      <mat-checkbox name="IsActive" [(ngModel)]="tenant.isActive">
+                                        {{ "IsActive" | localize }}
+                                      </mat-checkbox>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              
+                                
+                          </div>
+                        </div>
+                  </div>
+              </div>
+    </form>
+  </div>
+</div>
+

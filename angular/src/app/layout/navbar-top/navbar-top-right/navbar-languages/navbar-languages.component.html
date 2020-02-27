@@ -5,7 +5,7 @@
       <b class="caret"></b>
     </a>
 
-    <ul class="dropdown-menu dropdown-menu-right">
+    <ul class="dropdown-menu dropdown-menu-right animate slideIn">
       <li *ngFor="let language of languages">
         <a class="dropdown-item" href="javascript:void(0);" *ngIf="language.name != currentLanguage.name" (click)="changeLanguage(language.name)"><i class="{{language.icon}}"></i> {{language.displayName}}</a>
       </li>

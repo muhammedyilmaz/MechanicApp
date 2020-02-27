@@ -31,7 +31,7 @@
             <i class="fa {{menuItem.icon}}" *ngIf="menuItem.icon"></i>
             {{menuItem.name}}
           </a> 
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menuItem.items.length">
+          <div class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown" *ngIf="menuItem.items.length">
             <ng-template ngFor let-subMenuItem [ngForOf]="menuItem.items" let-mainMenuItemIndex="index">
                <!-- route name -->
                <a [routerLink]="[subMenuItem.route]" class="dropdown-item" *ngIf="!subMenuItem.items.length && subMenuItem.route.indexOf('http') != 0">

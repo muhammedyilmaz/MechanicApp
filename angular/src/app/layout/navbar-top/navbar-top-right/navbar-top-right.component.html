@@ -7,7 +7,7 @@
         {{shownLoginName}} 
         <!-- - {{appSession.user.emailAddress}} -->
       </a> 
-      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
+      <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown" >
         <!-- Static link (starts with 'http') -->
         <a [routerLink]="['/app/update-password']" class="dropdown-item" *ngIf="isGranted('User.UpdatePassword')" >
             <i class="fa fa-lock"></i>

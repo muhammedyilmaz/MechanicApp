@@ -125,5 +125,11 @@
     <text name="Search">Search</text>
     <text name="CreationTime">Create date</text>
     <text name="LastModificationTime">Update date</text>
+    <text name="Definitions">Tanımlar</text>
+    <text name="CarMakes">Car makes</text>
+    <text name="CreateNewCarMake">Create new car make</text>
+    <text name="EditCarMake">Edit car make</text>
+    <text name="CarMakeDetails">Car make details</text>
+    <text name="CarModels">Car models</text>
   </texts>
 </localizationDictionary>

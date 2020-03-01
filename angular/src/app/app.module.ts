@@ -35,6 +35,9 @@ import { TableModule } from 'primeng/table';
 import {TooltipModule} from 'primeng/tooltip';
 import {TabViewModule} from 'primeng/tabview';
 import {InputTextModule} from 'primeng/inputtext';
+import { CarMakesComponent } from './auto-services/car-makes/car-makes.component';
+import { CreateCarMakeComponent } from './auto-services/car-makes/create-car-make/create-car-make.component';
+import { EditCarMakeComponent } from './auto-services/car-makes/edit-car-make/edit-car-make.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,10 @@ import {InputTextModule} from 'primeng/inputtext';
     ResetPasswordDialogComponent,
     NavbarTopComponent,
     NavbarTopRightComponent,
-    NavbarLanguagesComponent
+    NavbarLanguagesComponent,
+    CarMakesComponent,
+    CreateCarMakeComponent,
+    EditCarMakeComponent
   ],
   imports: [
     CommonModule,

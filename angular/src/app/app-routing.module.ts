@@ -13,6 +13,9 @@ import { EditRoleDialogComponent } from './roles/edit-role/edit-role-dialog.comp
 import { CreateRoleDialogComponent } from './roles/create-role/create-role-dialog.component';
 import { EditTenantDialogComponent } from './tenants/edit-tenant/edit-tenant-dialog.component';
 import { CreateTenantDialogComponent } from './tenants/create-tenant/create-tenant-dialog.component';
+import { CarMakesComponent } from './auto-services/car-makes/car-makes.component';
+import { EditCarMakeComponent } from './auto-services/car-makes/edit-car-make/edit-car-make.component';
+import { CreateCarMakeComponent } from './auto-services/car-makes/create-car-make/create-car-make.component';
 
 @NgModule({
     imports: [
@@ -35,6 +38,10 @@ import { CreateTenantDialogComponent } from './tenants/create-tenant/create-tena
                     { path:'tenants/edit/:id',component:EditTenantDialogComponent, data: { permission: 'Tenant.Edit' },canActivate: [AppRouteGuard] },
                     { path:'tenants/create',component:CreateTenantDialogComponent, data: { permission: 'Tenant.Create' },canActivate: [AppRouteGuard] },
                     { path:'tenants/view/:id',component:EditTenantDialogComponent, data: { permission: 'Tenant.View' },canActivate: [AppRouteGuard] },
+                    { path: 'car-makes', component: CarMakesComponent, data: { permission: 'CarMake.List' }, canActivate: [AppRouteGuard] },
+                    { path:'car-makes/edit/:id',component:EditCarMakeComponent, data: { permission: 'CarMake.Edit' },canActivate: [AppRouteGuard] },
+                    { path:'car-makes/create',component:CreateCarMakeComponent, data: { permission: 'CarMake.Create' },canActivate: [AppRouteGuard] },
+                    { path:'car-makes/view/:id',component:EditCarMakeComponent, data: { permission: 'CarMake.View' },canActivate: [AppRouteGuard] },
                 ]
             }
         ])

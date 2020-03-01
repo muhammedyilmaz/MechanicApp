@@ -15,6 +15,12 @@ export class NavbarTopComponent extends AppComponentBase {
 
         new MenuItem(this.l('Tenants'), 'Tenant.List', 'fa-users', '/app/tenants'),
 
+        new MenuItem(this.l('Definitions'), '', 'fa-align-center', '', [
+            new MenuItem(this.l('CarMakes'), 'CarMake.List', 'fa-dot-circle-o', '/app/car-makes'),
+            new MenuItem(this.l('Companies'), 'Company.List', 'fa-dot-circle-o', '/app/companies'),
+            new MenuItem(this.l('JobTypes'), 'JobType.List', 'fa-dot-circle-o', '/app/job-types'),
+            new MenuItem(this.l('Parts'), 'Part.List', 'fa-dot-circle-o', '/app/parts')
+        ]),
         new MenuItem(this.l('SystemManagement'), '', 'fa-cog', '', [
                 new MenuItem(this.l('Users'), 'User.List', 'fa-dot-circle-o', '/app/users'),
                 new MenuItem(this.l('Roles'), 'Role.List', 'fa-dot-circle-o', '/app/roles')

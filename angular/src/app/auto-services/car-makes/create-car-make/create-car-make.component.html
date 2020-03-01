@@ -1,0 +1,60 @@
+
+<div class="row">
+    <div class="col-md-12">
+      <form  autocomplete="off" #createCarMakeModal="ngForm" (ngSubmit)="save()">
+         <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                          <div class="col-md-6">
+                                <h5>
+                                  <button mat-icon-button type="button" [disabled]="saving" (click)="close()">
+                                    <mat-icon>keyboard_backspace</mat-icon>
+                                  </button> {{ "CreateNewCarMake" | localize }}</h5>
+                            </div>
+                            
+                          <div class="col-md-6 text-right">
+                            <button mat-stroked-button="primary"  (click)="save('Save')" [disabled]="!createCarMakeModal.form.valid || saving">
+                              <i class="fa fa-save"></i> {{ "Save" | localize }}
+                            </button>
+                            <button  mat-stroked-button="primary" (click)="save('SaveAndContunie')" [disabled]="!createCarMakeModal.form.valid || saving">
+                              <i class="fa fa-save"></i>  {{ "SaveAndContunie" | localize }}
+                            </button>
+                            <button  mat-stroked-button="primary" (click)="save('SaveAndNew')" [disabled]="!createCarMakeModal.form.valid || saving">
+                              <i class="fa fa-save"></i>  {{ "SaveAndNew" | localize }}
+                            </button>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <mat-tab-group>
+                                <mat-tab [label]="'CarMakeDetails' | localize">
+                                  <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                      <mat-form-field>
+                                        <input matInput name="Name" [placeholder]="'Name' | localize" [(ngModel)]="carMake.name" required
+                  maxlength="32" />
+                                      </mat-form-field>
+                                    </div>
+                                  </div>
+                                </mat-tab>
+                                <mat-tab [label]="'CarModels' | localize">
+                                  <div class="row">
+                                      <div class="col-md-6 col-sm-12">
+                                        <div class="checkbox-wrapper">
+                                            <span>
+                                                Önce ekleyin!
+                                            </span>
+                                        </div>
+                                      </div>
+                                  </div>
+                                </mat-tab>
+                              </mat-tab-group>
+                            </div>
+                          </div>
+                    </div>
+         </div>
+      </form>
+    </div>
+  </div>

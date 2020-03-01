@@ -124,5 +124,11 @@
     <text name="RoleDetails">Rol Detayları</text>
     <text name="CreationTime">Oluşturulma tarihi</text>
     <text name="LastModificationTime">Güncellenme tarihi</text>
+    <text name="Definitions">Tanımlar</text>
+    <text name="CarMakes">Araba markaları</text>
+    <text name="CreateNewCarMake">Yeni araba markası oluştur</text>
+    <text name="EditCarMake">Araba markası düzenle</text>
+    <text name="CarMakeDetails">Araba markası detayları</text>
+    <text name="CarModels">Araba modelleri</text>
   </texts>
 </localizationDictionary>

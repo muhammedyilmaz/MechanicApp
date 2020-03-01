@@ -1,0 +1,197 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-3">
+          <h5><i class="fa fa-car"></i> {{ "CarMakes" | localize }}</h5>
+        </div>
+        <div class="col-md-9 text-right">
+          <button mat-stroked-button="primary" *ngIf="isGranted('CarMake.Create')" [routerLink]="[ '/app/car-makes/create']">
+            <i class="fa fa-plus"></i> {{ "AddNew" | localize }}
+          </button>
+          <button  mat-stroked-button="dark" (click)="getCarMakes()">
+            <i class="fa fa-refresh"></i> {{ "Refresh" | localize }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <p-overlayPanel #op [dismissable]="false" [showCloseIcon]="true">
+    <div class="row">
+      <div class="col-md-12">
+        <form>
+          <div class="row">
+        
+            <div class="col-md-6">
+              <mat-form-field>
+                  <input matInput [placeholder]="l('Filter')" [(ngModel)]="keyword" name="keyword">
+              </mat-form-field>
+            </div>
+          <div class="col-md-12 text-right p-r-25">
+            <button mat-raised-button color="primary" (click)="getCarMakes()">
+              {{ "ApplyFilter" | localize }}
+            </button>
+          </div>
+  
+          </div>
+        </form>
+      </div>
+    </div>
+  </p-overlayPanel>
+  <div class="row align-items-center">
+    <div
+      class="primeng-datatable-container col-md-12"
+      [busy]="primengTableHelper.isLoading"
+    >
+      <p-table
+        #dataTable
+        (onLazyLoad)="getCarMakes($event)"
+        [value]="primengTableHelper.records"
+        rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+        [paginator]="false"
+        [lazy]="true"
+        [scrollable]="true"
+        ScrollWidth="100%"
+        [responsive]="primengTableHelper.isResponsive"
+        [resizableColumns]="primengTableHelper.resizableColumns"
+        [(selection)]="selectedCarMakes"
+        dataKey="id"
+        [rowHover]="true"
+        scrollHeight="calc(100vh - 282px)"
+      >
+        <ng-template pTemplate="caption">
+          <div class="row">
+            <div class="col-md-8 text-left">
+  
+              <button
+              mat-stroked-button="danger"
+              (click)="delete()"
+              *ngIf="selectedCarMakes.length > 0 && isGranted('CarMake.Delete')"
+            >
+              <i class="fa fa-trash"> </i> {{ "Delete" | localize }}
+            </button>
+  
+              <button
+              mat-stroked-button="info"
+              [routerLink]="['/app/car-makes/edit', selectedCarMakes[0].id]"
+              *ngIf="selectedCarMakes.length == 1 && isGranted('CarMake.Edit')"
+            >
+              <i class="fa fa-edit"> </i>  {{ "Edit" | localize }}
+            </button>
+  
+            <button
+            mat-stroked-button="primary"
+            [routerLink]="['/app/car-makes/view', selectedCarMakes[0].id]"
+            *ngIf="selectedCarMakes.length == 1 && isGranted('CarMake.View')"
+          >
+            <i class="fa fa-eye"> </i>  {{ "View" | localize }}
+          </button>
+              
+              
+            </div>
+            <div class="col-md-4 text-right">
+              <div class="input-group">
+                <input
+                  type="text"
+                  name="Keyword"
+                  [(ngModel)]="keyword"
+                  class="form-control"
+                  (keyup.enter)="getCarMakes()"
+                  [placeholder]="'Search' | localize"
+                />
+                <div class="input-group-prepend">
+                  <button
+                    type="button"
+                    mat-stroked-button="primary"
+                    class="btn"
+                    (click)="getCarMakes()"
+                  >
+                    <span class="fa fa-search" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="dropdown input-group-append">
+                  <button type="button" mat-stroked-button="primary" (click)="op.toggle($event)" class="btn btn-toggle-filter" data-toggle="button" aria-pressed="false">
+                    <i class="fa fa-filter"></i>
+                    <span> {{ "Filter" | localize }} </span>
+                    <i class="fa fa-angle-double-down"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+           </th>
+           <th style="width: 50px" pSortableColumn="id">
+            {{ "Id" | localize }}
+            <p-sortIcon field="id"></p-sortIcon>
+          </th>
+            <th style="width: 150px" pSortableColumn="name">
+              {{ "Name" | localize }}
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th style="width: 150px" pSortableColumn="creationTime">
+              {{ "CreationTime" | localize }}
+              <p-sortIcon field="creationTime"></p-sortIcon>
+            </th>
+            <th style="width: 150px" pSortableColumn="lastModificationTime">
+              {{ "LastModificationTime" | localize }}
+              <p-sortIcon field="lastModificationTime"></p-sortIcon>
+            </th>
+  
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowIndex="rowIndex"
+          let-record="$implicit"
+        >
+          <tr
+            [pSelectableRow]="record"
+            [pSelectableRowIndex]="rowIndex"
+            (dblclick)="onRowDblClick(record)"
+          >
+           <td style="width: 3em" (dblclick)="$event.stopPropagation()">
+               <p-tableCheckbox [value]="record"></p-tableCheckbox>
+           </td>
+           <td style="width: 50px">
+            {{ record.id }}
+          </td>
+            <td style="width: 150px">
+              {{ record.name }}
+            </td>
+            <td style="width: 150px">
+              {{ record.creationTime | date: 'short' }}
+            </td>
+            <td style="width: 150px">
+              {{ record.lastModificationTime | date: 'short' }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <div
+        class="primeng-no-data"
+        *ngIf="primengTableHelper.totalRecordsCount == 0"
+      >
+        {{ "NoData" | localize }}
+      </div>
+      <div class="primeng-paging-container">
+        <p-paginator
+          [rows]="primengTableHelper.defaultRecordsCountPerPage"
+          #paginator
+          (onPageChange)="getCarMakes($event)"
+          [totalRecords]="primengTableHelper.totalRecordsCount"
+          [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+        >
+        </p-paginator>
+        <span class="total-records-count">
+          {{ "TotalRecordsCount" | localize }} : {{ primengTableHelper.totalRecordsCount }}
+         
+        </span>
+      </div>
+    </div>
+  </div>
+  

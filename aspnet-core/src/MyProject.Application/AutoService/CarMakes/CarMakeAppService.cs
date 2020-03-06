@@ -7,7 +7,9 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Authorization;
+using MyProject.Authorization.Users;
 using MyProject.AutoService.CarMakes.Dto;
 
 namespace MyProject.AutoService.CarMakes
@@ -15,9 +17,12 @@ namespace MyProject.AutoService.CarMakes
     public class CarMakeAppService : AsyncCrudAppService<CarMake, CarMakeDto, int, PagedCarMakeResultRequestDto, CreateCarMakeDto, UpdateCarMakeDto>, ICarMakeAppService
     {
         private readonly IRepository<CarMake, int> _repository;
-        public CarMakeAppService(IRepository<CarMake, int> repository) : base(repository)
+        private readonly IRepository<User, long> _userRepository;
+        public CarMakeAppService(IRepository<CarMake, int> repository,
+             IRepository<User, long> userRepository) : base(repository)
         {
             _repository = repository;
+            _userRepository = userRepository;
         }
       
         [AbpAuthorize(PermissionNames.CarMake_Edit)]
@@ -34,14 +39,54 @@ namespace MyProject.AutoService.CarMakes
 
         protected override IQueryable<CarMake> CreateFilteredQuery(PagedCarMakeResultRequestDto input)
         {
-            return Repository.GetAllIncluding()
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword));
+            var query = base.CreateFilteredQuery(input);
+
+            query = query.WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword))
+                .WhereIf(!input.CreatorUserId.Equals(0), x => x.CreatorUserId == input.CreatorUserId)
+                .WhereIf(!input.LastModifierUserId.Equals(0), x => x.LastModifierUserId == input.LastModifierUserId);
+
+            return query;
+
+        }
+
+
+        private IQueryable<CarMakeDto> Query(IQueryable<CarMake> queryCarMakes)
+        {
+            var query = from carMake in queryCarMakes
+                         join creatorUser in _userRepository.GetAll() on carMake.CreatorUserId equals creatorUser.Id into creatorUserId
+                         from creatorUser in creatorUserId.DefaultIfEmpty()
+                         join lastModifierUser in _userRepository.GetAll() on carMake.LastModifierUserId equals lastModifierUser.Id into lastModifierUserId
+                         from lastModifierUser in lastModifierUserId.DefaultIfEmpty()
+                         select new CarMakeDto
+                         {
+                             Id = carMake.Id,
+                             CreationTime = carMake.CreationTime,
+                             CreatorUserFullName = creatorUser.Name + " " + creatorUser.Surname,
+                             LastModificationTime = carMake.LastModificationTime,
+                             LastModifierUserFullName = lastModifierUser.Name + " " + lastModifierUser.Surname,
+                             Name = carMake.Name
+                         };
+
+            return query;
         }
 
         [AbpAuthorize(PermissionNames.CarMake_List)]
-        public override Task<PagedResultDto<CarMakeDto>> GetAllAsync(PagedCarMakeResultRequestDto input)
+        public override async Task<PagedResultDto<CarMakeDto>> GetAllAsync(PagedCarMakeResultRequestDto input)
         {
-            return base.GetAllAsync(input);
+            CheckGetAllPermission();
+
+            var query = CreateFilteredQuery(input);
+            var totalCount = await AsyncQueryableExecuter.CountAsync(query);
+
+            query = ApplySorting(query, input);
+            query = ApplyPaging(query, input);
+
+            var entities = Query(query);
+            
+            return new PagedResultDto<CarMakeDto>(
+                totalCount,
+                entities.ToList()
+            );
         }
 
         [AbpAuthorize(PermissionNames.CarMake_Delete)]

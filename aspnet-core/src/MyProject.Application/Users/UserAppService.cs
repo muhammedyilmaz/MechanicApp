@@ -29,6 +29,7 @@ namespace MyProject.Users
     {
         private readonly UserManager _userManager;
         private readonly RoleManager _roleManager;
+        private readonly IRepository<User, long> _userRepository;
         private readonly IRepository<Role> _roleRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAbpSession _abpSession;
@@ -38,6 +39,7 @@ namespace MyProject.Users
             IRepository<User, long> repository,
             UserManager userManager,
             RoleManager roleManager,
+            IRepository<User, long> userRepository,
             IRepository<Role> roleRepository,
             IPasswordHasher<User> passwordHasher,
             IAbpSession abpSession,
@@ -46,6 +48,7 @@ namespace MyProject.Users
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _userRepository = userRepository;
             _roleRepository = roleRepository;
             _passwordHasher = passwordHasher;
             _abpSession = abpSession;
@@ -108,6 +111,7 @@ namespace MyProject.Users
             var roles = await _roleRepository.GetAllListAsync();
             return new ListResultDto<RoleDto>(ObjectMapper.Map<List<RoleDto>>(roles));
         }
+        
 
         public async Task ChangeLanguage(ChangeUserLanguageDto input)
         {
@@ -246,6 +250,12 @@ namespace MyProject.Users
         public override Task<PagedResultDto<UserDto>> GetAllAsync(PagedUserResultRequestDto input)
         {
             return base.GetAllAsync(input);
+        }
+
+        public async Task<ListResultDto<UserDto>> GetUsers()
+        {
+            var users = await _userRepository.GetAllListAsync();
+            return new ListResultDto<UserDto>(ObjectMapper.Map<List<UserDto>>(users));
         }
     }
 }

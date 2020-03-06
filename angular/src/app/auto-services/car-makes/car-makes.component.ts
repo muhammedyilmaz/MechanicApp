@@ -1,7 +1,7 @@
-import { Component, Injector, ViewChild } from "@angular/core";
+import { Component, Injector, ViewChild, OnInit } from "@angular/core";
 import { finalize } from "rxjs/operators";
 import { appModuleAnimation } from "@shared/animations/routerTransition";
-import { CarMakeDto, CarMakeServiceProxy } from "@shared/service-proxies/service-proxies";
+import { CarMakeDto, CarMakeServiceProxy, UserDto, UserServiceProxy } from "@shared/service-proxies/service-proxies";
 import { LazyLoadEvent } from "primeng/components/common/lazyloadevent";
 import { Paginator } from "primeng/components/paginator/paginator";
 import { Table } from "primeng/components/table/table";
@@ -19,20 +19,33 @@ import { Router } from "@angular/router";
     `
   ]
 })
-export class CarMakesComponent extends AppComponentBase {
+export class CarMakesComponent extends AppComponentBase
+implements OnInit {
   @ViewChild("dataTable", { static: true }) dataTable: Table;
   @ViewChild("paginator", { static: true }) paginator: Paginator;
 
   keyword = "";
   isActive: boolean | null;
   selectedCarMakes: CarMakeDto[] = [];
+  users: UserDto[] = [];
+  creatorUserId=0;
+  lastModifierUserId=0;
   
   constructor(
     injector: Injector,
     private _carMakeService: CarMakeServiceProxy,
-    private _router:Router
+    private _router:Router,
+    public _userService: UserServiceProxy
   ) {
     super(injector);
+  }
+
+  ngOnInit(): void {
+    this._userService.getUsers().subscribe(result => {
+      this.users = result.items;
+    });
+
+    
   }
 
   getCarMakes(event?: LazyLoadEvent) {
@@ -43,11 +56,12 @@ export class CarMakesComponent extends AppComponentBase {
     }
 
     this.primengTableHelper.showLoadingIndicator();
-
+    console.log("creatorUserId",this.creatorUserId);
     this._carMakeService
       .getAll(
         this.keyword,
-        // this.isActive,
+        this.creatorUserId,
+        this.lastModifierUserId,
         this.primengTableHelper.getSorting(this.dataTable),
         this.primengTableHelper.getSkipCount(this.paginator, event),
         this.primengTableHelper.getMaxResultCount(this.paginator, event)

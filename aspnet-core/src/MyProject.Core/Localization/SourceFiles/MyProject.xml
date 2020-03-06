@@ -131,5 +131,7 @@
     <text name="EditCarMake">Edit car make</text>
     <text name="CarMakeDetails">Car make details</text>
     <text name="CarModels">Car models</text>
+    <text name="CreatorUserFullName">Create user</text>
+    <text name="LastModifierUserFullName">Update user</text>
   </texts>
 </localizationDictionary>

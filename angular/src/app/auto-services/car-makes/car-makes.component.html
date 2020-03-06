@@ -24,8 +24,23 @@
         
             <div class="col-md-6">
               <mat-form-field>
-                  <input matInput [placeholder]="l('Filter')" [(ngModel)]="keyword" name="keyword">
+                <mat-select [placeholder]="l('CreatorUserFullName')" [(ngModel)]="creatorUserId" name="creatorUserId">
+                  <mat-option *ngFor="let user of users" [value]="user.id">
+                    {{user.fullName}}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
+
+            </div>
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-select [placeholder]="l('LastModifierUserFullName')" [(ngModel)]="lastModifierUserId" name="lastModifierUserId">
+                  <mat-option *ngFor="let user of users" [value]="user.id">
+                    {{user.fullName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
             </div>
           <div class="col-md-12 text-right p-r-25">
             <button mat-raised-button color="primary" (click)="getCarMakes()">
@@ -137,9 +152,17 @@
               {{ "CreationTime" | localize }}
               <p-sortIcon field="creationTime"></p-sortIcon>
             </th>
+            <th style="width: 150px" pSortableColumn="creatorUserFullName">
+              {{ "CreatorUserFullName" | localize }}
+              <p-sortIcon field="creatorUserFullName"></p-sortIcon>
+            </th>
             <th style="width: 150px" pSortableColumn="lastModificationTime">
               {{ "LastModificationTime" | localize }}
               <p-sortIcon field="lastModificationTime"></p-sortIcon>
+            </th>
+            <th style="width: 150px" pSortableColumn="lastModifierUserFullName">
+              {{ "LastModifierUserFullName" | localize }}
+              <p-sortIcon field="lastModifierUserFullName"></p-sortIcon>
             </th>
   
           </tr>
@@ -167,7 +190,13 @@
               {{ record.creationTime | date: 'short' }}
             </td>
             <td style="width: 150px">
+              {{ record.creatorUserFullName }}
+            </td>
+            <td style="width: 150px">
               {{ record.lastModificationTime | date: 'short' }}
+            </td>
+            <td style="width: 150px">
+              {{ record.lastModifierUserFullName }}
             </td>
           </tr>
         </ng-template>

@@ -130,5 +130,7 @@
     <text name="EditCarMake">Araba markası düzenle</text>
     <text name="CarMakeDetails">Araba markası detayları</text>
     <text name="CarModels">Araba modelleri</text>
+    <text name="CreatorUserFullName">Oluşturan kullanıcı</text>
+    <text name="LastModifierUserFullName">Güncelleyen kullanıcı</text>
   </texts>
 </localizationDictionary>

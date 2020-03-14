@@ -265,27 +265,27 @@ export class CarMakeServiceProxy {
 
     /**
      * @param keyword (optional) 
-     * @param creatorUserId (optional) 
-     * @param lastModifierUserId (optional) 
+     * @param creatorUserIds (optional) 
+     * @param lastModifierUserIds (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | undefined, creatorUserId: number | undefined, lastModifierUserId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<CarMakeDtoPagedResultDto> {
+    getAll(keyword: string | undefined, creatorUserIds: number[] | undefined, lastModifierUserIds: number[] | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<CarMakeDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/CarMake/GetAll?";
         if (keyword === null)
             throw new Error("The parameter 'keyword' cannot be null.");
         else if (keyword !== undefined)
             url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&"; 
-        if (creatorUserId === null)
-            throw new Error("The parameter 'creatorUserId' cannot be null.");
-        else if (creatorUserId !== undefined)
-            url_ += "CreatorUserId=" + encodeURIComponent("" + creatorUserId) + "&"; 
-        if (lastModifierUserId === null)
-            throw new Error("The parameter 'lastModifierUserId' cannot be null.");
-        else if (lastModifierUserId !== undefined)
-            url_ += "LastModifierUserId=" + encodeURIComponent("" + lastModifierUserId) + "&"; 
+        if (creatorUserIds === null)
+            throw new Error("The parameter 'creatorUserIds' cannot be null.");
+        else if (creatorUserIds !== undefined)
+            creatorUserIds && creatorUserIds.forEach(item => { url_ += "CreatorUserIds=" + encodeURIComponent("" + item) + "&"; });
+        if (lastModifierUserIds === null)
+            throw new Error("The parameter 'lastModifierUserIds' cannot be null.");
+        else if (lastModifierUserIds !== undefined)
+            lastModifierUserIds && lastModifierUserIds.forEach(item => { url_ += "LastModifierUserIds=" + encodeURIComponent("" + item) + "&"; });
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -3763,8 +3763,8 @@ export class UserServiceProxy {
     /**
      * @return Success
      */
-    getUsers(): Observable<UserDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/User/GetUsers";
+    getSelectListItemUsers(): Observable<SelectListItemListResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/User/GetSelectListItemUsers";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3776,20 +3776,20 @@ export class UserServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUsers(response_);
+            return this.processGetSelectListItemUsers(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetUsers(<any>response_);
+                    return this.processGetSelectListItemUsers(<any>response_);
                 } catch (e) {
-                    return <Observable<UserDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<SelectListItemListResultDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<UserDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<SelectListItemListResultDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetUsers(response: HttpResponseBase): Observable<UserDtoListResultDto> {
+    protected processGetSelectListItemUsers(response: HttpResponseBase): Observable<SelectListItemListResultDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -3800,7 +3800,7 @@ export class UserServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserDtoListResultDto.fromJS(resultData200);
+            result200 = SelectListItemListResultDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3808,7 +3808,7 @@ export class UserServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<UserDtoListResultDto>(<any>null);
+        return _observableOf<SelectListItemListResultDto>(<any>null);
     }
 
     /**
@@ -7038,10 +7038,116 @@ export interface IUserDtoPagedResultDto {
     items: UserDto[] | undefined;
 }
 
-export class UserDtoListResultDto implements IUserDtoListResultDto {
-    items: UserDto[] | undefined;
+export class SelectListGroup implements ISelectListGroup {
+    disabled: boolean;
+    name: string | undefined;
 
-    constructor(data?: IUserDtoListResultDto) {
+    constructor(data?: ISelectListGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.disabled = _data["disabled"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): SelectListGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new SelectListGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["disabled"] = this.disabled;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): SelectListGroup {
+        const json = this.toJSON();
+        let result = new SelectListGroup();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISelectListGroup {
+    disabled: boolean;
+    name: string | undefined;
+}
+
+export class SelectListItem implements ISelectListItem {
+    disabled: boolean;
+    group: SelectListGroup;
+    selected: boolean;
+    text: string | undefined;
+    value: string | undefined;
+
+    constructor(data?: ISelectListItem) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.disabled = _data["disabled"];
+            this.group = _data["group"] ? SelectListGroup.fromJS(_data["group"]) : <any>undefined;
+            this.selected = _data["selected"];
+            this.text = _data["text"];
+            this.value = _data["value"];
+        }
+    }
+
+    static fromJS(data: any): SelectListItem {
+        data = typeof data === 'object' ? data : {};
+        let result = new SelectListItem();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["disabled"] = this.disabled;
+        data["group"] = this.group ? this.group.toJSON() : <any>undefined;
+        data["selected"] = this.selected;
+        data["text"] = this.text;
+        data["value"] = this.value;
+        return data; 
+    }
+
+    clone(): SelectListItem {
+        const json = this.toJSON();
+        let result = new SelectListItem();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISelectListItem {
+    disabled: boolean;
+    group: SelectListGroup;
+    selected: boolean;
+    text: string | undefined;
+    value: string | undefined;
+}
+
+export class SelectListItemListResultDto implements ISelectListItemListResultDto {
+    items: SelectListItem[] | undefined;
+
+    constructor(data?: ISelectListItemListResultDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7055,14 +7161,14 @@ export class UserDtoListResultDto implements IUserDtoListResultDto {
             if (Array.isArray(_data["items"])) {
                 this.items = [] as any;
                 for (let item of _data["items"])
-                    this.items.push(UserDto.fromJS(item));
+                    this.items.push(SelectListItem.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): UserDtoListResultDto {
+    static fromJS(data: any): SelectListItemListResultDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UserDtoListResultDto();
+        let result = new SelectListItemListResultDto();
         result.init(data);
         return result;
     }
@@ -7077,16 +7183,16 @@ export class UserDtoListResultDto implements IUserDtoListResultDto {
         return data; 
     }
 
-    clone(): UserDtoListResultDto {
+    clone(): SelectListItemListResultDto {
         const json = this.toJSON();
-        let result = new UserDtoListResultDto();
+        let result = new SelectListItemListResultDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IUserDtoListResultDto {
-    items: UserDto[] | undefined;
+export interface ISelectListItemListResultDto {
+    items: SelectListItem[] | undefined;
 }
 
 export class ApiException extends Error {

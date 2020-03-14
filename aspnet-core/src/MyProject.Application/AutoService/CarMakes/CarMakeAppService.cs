@@ -7,7 +7,6 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Extensions;
 using Abp.Linq.Extensions;
-using Microsoft.EntityFrameworkCore;
 using MyProject.Authorization;
 using MyProject.Authorization.Users;
 using MyProject.AutoService.CarMakes.Dto;
@@ -42,8 +41,8 @@ namespace MyProject.AutoService.CarMakes
             var query = base.CreateFilteredQuery(input);
 
             query = query.WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword))
-                .WhereIf(!input.CreatorUserId.Equals(0), x => x.CreatorUserId == input.CreatorUserId)
-                .WhereIf(!input.LastModifierUserId.Equals(0), x => x.LastModifierUserId == input.LastModifierUserId);
+                .WhereIf(input.CreatorUserIds!=null, x => input.CreatorUserIds.Contains(x.CreatorUserId))
+                .WhereIf(input.LastModifierUserIds != null, x => input.LastModifierUserIds.Contains(x.LastModifierUserId));
 
             return query;
 

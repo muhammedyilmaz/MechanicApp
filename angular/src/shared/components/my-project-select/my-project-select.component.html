@@ -1,0 +1,41 @@
+<mat-form-field *ngIf="!multiSelect">
+  <mat-label>{{ l(placeholder) }}</mat-label>
+  <mat-select [(ngModel)]="data"
+              (selectionChange)="onChangeSelection($event)"
+              disableOptionCentering
+              [required]="required"
+              [disabled]="disabled"
+              (openedChange)="openedChange($event)"
+              placeholder="{{ l(emptyItemText) }}">
+
+
+
+    <mat-option *ngIf="emptyItem">{{ l(emptyItemText) }}</mat-option>
+
+    <mat-option *ngIf="addAllOption"  [value]="-1">{{ l(allOptionText) }}</mat-option>
+
+    <mat-option *ngFor="let option of options"
+                [value]="option.value">{{ option.text }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field *ngIf="multiSelect">
+  <mat-label>{{ l(placeholder) }}</mat-label>
+  <mat-select [(ngModel)]="data"
+              (selectionChange)="onChangeSelection($event)"
+              disableOptionCentering
+              [required]="required"
+              [disabled]="disabled"
+              (openedChange)="openedChange($event)"
+              placeholder="{{ l(emptyItemText) }}"
+              multiple>
+
+
+
+    <!-- <mat-option *ngIf="emptyItem">{{ l(emptyItemText) }}</mat-option> -->
+    <mat-option *ngIf="addAllOption" [value]="-1">{{ l(allOptionText) }}</mat-option>
+    <mat-option *ngFor="let option of options"
+                [value]="option.value">{{ option.text }}</mat-option>
+  </mat-select>
+</mat-form-field>
+

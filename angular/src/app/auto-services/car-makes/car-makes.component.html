@@ -23,23 +23,29 @@
           <div class="row">
         
             <div class="col-md-6">
-              <mat-form-field>
+              <!-- <mat-form-field>
                 <mat-select [placeholder]="l('CreatorUserFullName')" [(ngModel)]="creatorUserId" name="creatorUserId">
                   <mat-option *ngFor="let user of users" [value]="user.id">
                     {{user.fullName}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
+
+              <app-my-project-select-search [(ngModel)]="creatorUserIds" name="creatorUserIds" [placeholder]="'CreatorUserFullName'" [multiSelect]="'true'" [options]="users">
+              </app-my-project-select-search>
 
             </div>
             <div class="col-md-6">
-              <mat-form-field>
+              <!-- <mat-form-field>
                 <mat-select [placeholder]="l('LastModifierUserFullName')" [(ngModel)]="lastModifierUserId" name="lastModifierUserId">
                   <mat-option *ngFor="let user of users" [value]="user.id">
                     {{user.fullName}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
+              </mat-form-field> -->
+
+              <app-my-project-select-search [(ngModel)]="lastModifierUserIds" name="lastModifierUserIds" [placeholder]="'LastModifierUserFullName'" [multiSelect]="'true'" [options]="users">
+              </app-my-project-select-search>
 
             </div>
           <div class="col-md-12 text-right p-r-25">

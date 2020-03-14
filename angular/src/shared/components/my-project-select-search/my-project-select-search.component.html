@@ -1,0 +1,44 @@
+<mat-form-field *ngIf="!multiSelect">
+  <mat-label>{{ l(placeholder) }}</mat-label>
+  <mat-select [(ngModel)]="data"
+              (selectionChange)="onChangeSelection($event)"
+              disableOptionCentering
+              [required]="required"
+              [disabled]="disabled"
+              (openedChange)="openedChange($event)"
+              placeholder="{{ l(emptyItemText) }}">
+
+    <ngx-mat-select-search [formControl]="filterCtrl"
+                           [placeholderLabel]="l('Search')"
+                           [noEntriesFoundLabel]="l('NO-RESULT')">
+    </ngx-mat-select-search>
+
+    <mat-option *ngIf="emptyItem">{{ l(emptyItemText) }}</mat-option>
+    <mat-option *ngFor="let option of filteredOptions"
+                [value]="option.value">{{ option.text }}</mat-option>
+  </mat-select>
+  <mat-error *ngIf="filterCtrl.hasError('required')"> Your selection is invalid</mat-error>
+</mat-form-field>
+
+<mat-form-field *ngIf="multiSelect">
+  <mat-label>{{ l(placeholder) }}</mat-label>
+  <mat-select [(ngModel)]="data"
+              (selectionChange)="onChangeSelection($event)"
+              disableOptionCentering
+              [required]="required"
+              (openedChange)="openedChange($event)"
+              placeholder="{{ l(emptyItemText) }}"
+              multiple>
+
+    <ngx-mat-select-search [formControl]="filterCtrl"
+                           [placeholderLabel]="l('Search')"
+                           [noEntriesFoundLabel]="l('NO-RESULT')">
+    </ngx-mat-select-search>
+
+    <!-- <mat-option *ngIf="emptyItem">{{ l(emptyItemText) }}</mat-option> -->
+    <mat-option *ngIf="addAllOption" [value]="-1">{{ l(allOptionText) }}</mat-option>
+    <mat-option *ngFor="let option of filteredOptions"
+                [value]="option.value">{{ option.text }}</mat-option>
+  </mat-select>
+</mat-form-field>
+

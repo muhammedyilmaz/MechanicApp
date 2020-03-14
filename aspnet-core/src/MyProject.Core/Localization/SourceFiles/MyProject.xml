@@ -133,5 +133,6 @@
     <text name="CarModels">Car models</text>
     <text name="CreatorUserFullName">Create user</text>
     <text name="LastModifierUserFullName">Update user</text>
+    <text name="Choose">Seçiniz..</text>
   </texts>
 </localizationDictionary>

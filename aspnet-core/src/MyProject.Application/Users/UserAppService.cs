@@ -22,6 +22,7 @@ using MyProject.Roles.Dto;
 using MyProject.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MyProject.Users
 {
@@ -111,7 +112,7 @@ namespace MyProject.Users
             var roles = await _roleRepository.GetAllListAsync();
             return new ListResultDto<RoleDto>(ObjectMapper.Map<List<RoleDto>>(roles));
         }
-        
+
 
         public async Task ChangeLanguage(ChangeUserLanguageDto input)
         {
@@ -186,7 +187,7 @@ namespace MyProject.Users
             long userId = _abpSession.UserId.Value;
             var user = await _userManager.GetUserByIdAsync(userId);
             var loginAsync = await _logInManager.LoginAsync(user.UserName, input.CurrentPassword, shouldLockout: false);
-           
+
             if (loginAsync.Result != AbpLoginResultType.Success)
             {
                 throw new UserFriendlyException(L("PasswordNotMatchErrorMessage"));
@@ -243,7 +244,7 @@ namespace MyProject.Users
                 var user = await _userManager.GetUserByIdAsync(id);
                 await _userManager.DeleteAsync(user);
             }
-            
+
         }
 
         [AbpAuthorize(PermissionNames.User_List)]
@@ -252,11 +253,17 @@ namespace MyProject.Users
             return base.GetAllAsync(input);
         }
 
-        public async Task<ListResultDto<UserDto>> GetUsers()
+        public async Task<ListResultDto<SelectListItem>> GetSelectListItemUsers()
         {
             var users = await _userRepository.GetAllListAsync();
-            return new ListResultDto<UserDto>(ObjectMapper.Map<List<UserDto>>(users));
+            var options = users.Select(user =>
+                                  new SelectListItem
+                                  {
+                                      Value = user.Id.ToString(),
+                                      Text = user.FullName
+                                  }).ToList();
+
+            return new ListResultDto<SelectListItem>(ObjectMapper.Map<List<SelectListItem>>(options));
         }
     }
 }
-

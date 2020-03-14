@@ -49,7 +49,7 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
 } from '@angular/material';
 import { BlockDirective } from './directives/block.directive';
 import { BusyDirective } from './directives/busy.directive';
@@ -57,13 +57,17 @@ import { EqualValidator } from './directives/equal-validator.directive';
 import { ArrayToTreeConverterService } from './helpers/array-to-tree-converter.service';
 import { TreeDataHelperService } from './helpers/tree-data-helper.service';
 import { PermissionTreeComponent } from './components/permission-tree.component';
-import { FormsModule } from '@angular/forms';
-import {TreeModule} from 'primeng/tree'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TreeModule } from 'primeng/tree'
+import { MyProjectSelectSearchComponent } from './components/my-project-select-search/my-project-select-search.component';
+import { MyProjectSelectComponent } from './components/my-project-select/my-project-select.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         AbpModule,
         RouterModule,
         NgxPaginationModule,
@@ -102,7 +106,8 @@ import {TreeModule} from 'primeng/tree'
         MatToolbarModule,
         MatTooltipModule,
         MatTreeModule,
-        TreeModule
+        TreeModule,
+        NgxMatSelectSearchModule        
     ],
     providers: [
         ArrayToTreeConverterService,
@@ -114,7 +119,9 @@ import {TreeModule} from 'primeng/tree'
         LocalizePipe,
         BlockDirective,
         BusyDirective,
-        EqualValidator
+        EqualValidator,
+        MyProjectSelectComponent,
+        MyProjectSelectSearchComponent
     ],
     exports: [
         AbpPaginationControlsComponent,
@@ -162,6 +169,9 @@ import {TreeModule} from 'primeng/tree'
         MatTooltipModule,
         MatTreeModule,
         ScrollingModule,
+        MyProjectSelectComponent,
+        MyProjectSelectSearchComponent
+        
     ]
 })
 export class SharedModule {

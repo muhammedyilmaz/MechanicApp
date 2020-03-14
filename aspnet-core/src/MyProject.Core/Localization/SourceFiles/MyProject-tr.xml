@@ -132,5 +132,7 @@
     <text name="CarModels">Araba modelleri</text>
     <text name="CreatorUserFullName">Oluşturan kullanıcı</text>
     <text name="LastModifierUserFullName">Güncelleyen kullanıcı</text>
+    <text name="Choose">Seçiniz..</text>
+    
   </texts>
 </localizationDictionary>

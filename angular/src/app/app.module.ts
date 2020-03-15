@@ -38,6 +38,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import { CarMakesComponent } from './auto-services/car-makes/car-makes.component';
 import { CreateCarMakeComponent } from './auto-services/car-makes/create-car-make/create-car-make.component';
 import { EditCarMakeComponent } from './auto-services/car-makes/edit-car-make/edit-car-make.component';
+import { CarModelsComponent } from './auto-services/car-models/car-models.component';
+import { CreateCarModelComponent } from './auto-services/car-models/create-car-model/create-car-model.component';
+import { EditCarModelComponent } from './auto-services/car-models/edit-car-model/edit-car-model.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,10 @@ import { EditCarMakeComponent } from './auto-services/car-makes/edit-car-make/ed
     NavbarLanguagesComponent,
     CarMakesComponent,
     CreateCarMakeComponent,
-    EditCarMakeComponent
+    EditCarMakeComponent,
+    CarModelsComponent,
+    CreateCarModelComponent,
+    EditCarModelComponent
   ],
   imports: [
     CommonModule,

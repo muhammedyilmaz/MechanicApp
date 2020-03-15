@@ -1,7 +1,7 @@
-import { Component, Injector, ViewChild, OnInit } from "@angular/core";
+import { Component, Injector, ViewChild, OnInit, Input } from "@angular/core";
 import { finalize } from "rxjs/operators";
 import { appModuleAnimation } from "@shared/animations/routerTransition";
-import { CarMakeDto, CarMakeServiceProxy, UserServiceProxy } from "@shared/service-proxies/service-proxies";
+import { CarModelDto, CarModelServiceProxy, UserServiceProxy } from "@shared/service-proxies/service-proxies";
 import { LazyLoadEvent } from "primeng/components/common/lazyloadevent";
 import { Paginator } from "primeng/components/paginator/paginator";
 import { Table } from "primeng/components/table/table";
@@ -9,7 +9,8 @@ import { AppComponentBase } from "@shared/app-component-base";
 import { Router } from "@angular/router";
 
 @Component({
-  templateUrl: "./car-makes.component.html",
+  selector:"app-car-models",
+  templateUrl: "./car-models.component.html",
   animations: [appModuleAnimation()],
   styles: [
     `
@@ -19,21 +20,24 @@ import { Router } from "@angular/router";
     `
   ]
 })
-export class CarMakesComponent extends AppComponentBase
+export class CarModelsComponent extends AppComponentBase
 implements OnInit {
   @ViewChild("dataTable", { static: true }) dataTable: Table;
   @ViewChild("paginator", { static: true }) paginator: Paginator;
 
   keyword = "";
   isActive: boolean | null;
-  selectedCarMakes: CarMakeDto[] = [];
+  selectedCarModels: CarModelDto[] = [];
   users : any;
   creatorUserIds: number[] = [];
   lastModifierUserIds: number[] = [];
+  tableHeight = "calc(100vh - 282px)";
+  @Input() childView: boolean = false;
+  @Input() carMakeId: number = 0;
   
   constructor(
     injector: Injector,
-    private _carMakeService: CarMakeServiceProxy,
+    private _carModelService: CarModelServiceProxy,
     private _router:Router,
     public _userService: UserServiceProxy
   ) {
@@ -44,9 +48,13 @@ implements OnInit {
     this._userService.getSelectListItemUsers().subscribe(result => {
       this.users = result.items;
     });
+
+    if (this.childView) {
+      this.tableHeight = "calc(100vh - 438px)";
+    }
   }
 
-  getCarMakes(event?: LazyLoadEvent) {
+  getCarModels(event?: LazyLoadEvent) {
     if (this.primengTableHelper.shouldResetPaging(event)) {
       this.paginator.changePage(0);
 
@@ -55,9 +63,10 @@ implements OnInit {
 
     this.primengTableHelper.showLoadingIndicator();
     console.log("creatorUserId",this.creatorUserIds);
-    this._carMakeService
+    this._carModelService
       .getAll(
         this.keyword,
+        this.carMakeId,
         this.creatorUserIds,
         this.lastModifierUserIds,
         this.primengTableHelper.getSorting(this.dataTable),
@@ -82,29 +91,29 @@ implements OnInit {
 
  
   onRowDblClick(rowData) {
-  if(this.isGranted('CarMake.Edit')){
-    this._router.navigate(['/app/car-makes/edit', rowData.id]);
+  if(this.isGranted('CarModel.Edit')){
+    this._router.navigate(['/app/car-models/edit', rowData.id]);
   }
-  else if (this.isGranted('CarMake.View')){
-    this._router.navigate(['/app/car-makes/view', rowData.id]);
+  else if (this.isGranted('CarModel.View')){
+    this._router.navigate(['/app/car-models/view', rowData.id]);
   }
   }
 
   protected delete(): void {
     let ids =new Array<number>();
     
-    this.selectedCarMakes.map(carMake=>{
-      ids.push(carMake.id);
+    this.selectedCarModels.map(carModel=>{
+      ids.push(carModel.id);
     });
     abp.message.confirm(
-      this.l("CarMakeDeleteWarningMessage","Seçili"),
+      this.l("CarModelDeleteWarningMessage","Seçili"),
       undefined,
       (result: boolean) => {
         if (result) {
-          this._carMakeService.bulkDelete(ids).subscribe(()=>{
+          this._carModelService.bulkDelete(ids).subscribe(()=>{
             abp.notify.success(this.l("SuccessfullyDeleted"));
             this.reloadPage();
-            this.selectedCarMakes = [];
+            this.selectedCarModels = [];
           })
         }
       }

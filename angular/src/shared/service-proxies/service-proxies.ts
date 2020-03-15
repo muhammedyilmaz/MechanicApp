@@ -631,12 +631,14 @@ export class CarModelServiceProxy {
     /**
      * @param keyword (optional) 
      * @param carMakeId (optional) 
+     * @param creatorUserIds (optional) 
+     * @param lastModifierUserIds (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | undefined, carMakeId: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<CarModelDtoPagedResultDto> {
+    getAll(keyword: string | undefined, carMakeId: number | undefined, creatorUserIds: number[] | undefined, lastModifierUserIds: number[] | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<CarModelDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/CarModel/GetAll?";
         if (keyword === null)
             throw new Error("The parameter 'keyword' cannot be null.");
@@ -646,6 +648,14 @@ export class CarModelServiceProxy {
             throw new Error("The parameter 'carMakeId' cannot be null.");
         else if (carMakeId !== undefined)
             url_ += "CarMakeId=" + encodeURIComponent("" + carMakeId) + "&"; 
+        if (creatorUserIds === null)
+            throw new Error("The parameter 'creatorUserIds' cannot be null.");
+        else if (creatorUserIds !== undefined)
+            creatorUserIds && creatorUserIds.forEach(item => { url_ += "CreatorUserIds=" + encodeURIComponent("" + item) + "&"; });
+        if (lastModifierUserIds === null)
+            throw new Error("The parameter 'lastModifierUserIds' cannot be null.");
+        else if (lastModifierUserIds !== undefined)
+            lastModifierUserIds && lastModifierUserIds.forEach(item => { url_ += "LastModifierUserIds=" + encodeURIComponent("" + item) + "&"; });
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -4332,6 +4342,10 @@ export interface IUpdateCarModelDto {
 export class CarModelDto implements ICarModelDto {
     name: string | undefined;
     carMakeId: number;
+    creatorUserFullName: string | undefined;
+    lastModifierUserFullName: string | undefined;
+    creationTime: moment.Moment | undefined;
+    lastModificationTime: moment.Moment | undefined;
     id: number;
 
     constructor(data?: ICarModelDto) {
@@ -4347,6 +4361,10 @@ export class CarModelDto implements ICarModelDto {
         if (_data) {
             this.name = _data["name"];
             this.carMakeId = _data["carMakeId"];
+            this.creatorUserFullName = _data["creatorUserFullName"];
+            this.lastModifierUserFullName = _data["lastModifierUserFullName"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.lastModificationTime = _data["lastModificationTime"] ? moment(_data["lastModificationTime"].toString()) : <any>undefined;
             this.id = _data["id"];
         }
     }
@@ -4362,6 +4380,10 @@ export class CarModelDto implements ICarModelDto {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["carMakeId"] = this.carMakeId;
+        data["creatorUserFullName"] = this.creatorUserFullName;
+        data["lastModifierUserFullName"] = this.lastModifierUserFullName;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -4377,6 +4399,10 @@ export class CarModelDto implements ICarModelDto {
 export interface ICarModelDto {
     name: string | undefined;
     carMakeId: number;
+    creatorUserFullName: string | undefined;
+    lastModifierUserFullName: string | undefined;
+    creationTime: moment.Moment | undefined;
+    lastModificationTime: moment.Moment | undefined;
     id: number;
 }
 

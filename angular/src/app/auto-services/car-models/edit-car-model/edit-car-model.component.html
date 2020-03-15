@@ -1,7 +1,7 @@
 
 <div class="row">
     <div class="col-md-12">
-      <form  autocomplete="off" #createCarMakeModal="ngForm">
+      <form  autocomplete="off" #createCarModelModal="ngForm">
           <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -10,26 +10,26 @@
                                   <button mat-icon-button type="button" [disabled]="saving" (click)="close()">
                                     <mat-icon>keyboard_backspace</mat-icon>
                                   </button> 
-                                  <span *ngIf="action == 'edit'">{{ "EditCarMake" | localize }} - {{ editTitle }}</span>
-                                  <span *ngIf="action == 'view'">{{ "ViewCarMake" | localize }} - {{ editTitle }}</span>
+                                  <span *ngIf="action == 'edit'">{{ "EditCarModel" | localize }} - {{ editTitle }}</span>
+                                  <span *ngIf="action == 'view'">{{ "ViewCarModel" | localize }} - {{ editTitle }}</span>
                                 </h5>
                             </div>
                            
                           <div class="col-md-6 text-right" *ngIf="action=='edit'">
-                            <button mat-stroked-button="primary"  (click)="save('Save')" [disabled]="!createCarMakeModal.form.valid || saving">
+                            <button mat-stroked-button="primary"  (click)="save('Save')" [disabled]="!createCarModelModal.form.valid || saving">
                               <i class="fa fa-save"></i> {{ "Save" | localize }}
                             </button>
-                            <button  mat-stroked-button="primary" (click)="save('SaveAndContunie')" [disabled]="!createCarMakeModal.form.valid || saving">
+                            <button  mat-stroked-button="primary" (click)="save('SaveAndContunie')" [disabled]="!createCarModelModal.form.valid || saving">
                               <i class="fa fa-save"></i>  {{ "SaveAndContunie" | localize }}
                             </button>
-                            <button mat-stroked-button="danger" *ngIf="isGranted('CarMake.Delete')"  (click)="delete()">
+                            <button mat-stroked-button="danger" *ngIf="isGranted('CarModel.Delete')"  (click)="delete()">
                               <i class="fa fa-trash"></i>  {{ "Delete" | localize }}
                             </button>
                           </div>
-                          <div class="col-md-6 text-right" *ngIf="action=='view' && isGranted('CarMake.Edit')">
+                          <div class="col-md-6 text-right" *ngIf="action=='view' && isGranted('CarModel.Edit')">
                             <button
                             mat-stroked-button="primary"
-                            [routerLink]="['/app/car-makes/edit', id]"
+                            [routerLink]="['/app/car-models/edit', id]"
                             >
                             <i class="fa fa-edit"></i> {{ "Edit" | localize }}
                           </button>
@@ -40,32 +40,16 @@
                     <div class="card-body">
                           <div class="row">
                             <div class="col-md-12">
-                              <mat-tab-group>
-                                <mat-tab [label]="'CarMakeDetails' | localize">
                                   <div class="row">
                                    
                                     <div class="col-md-12 col-sm-12">
                                       <mat-form-field>
-                                        <input matInput name="Name" [placeholder]="'Name' | localize" [(ngModel)]="carMake.name" required
+                                        <input matInput name="Name" [placeholder]="'Name' | localize" [(ngModel)]="carModel.name" required
                   maxlength="32" />
                                       </mat-form-field>
                                     </div>
                                   </div>
                                   
-                                </mat-tab>
-                                <mat-tab [label]="'CarModels' | localize">
-                                  <div class="row">
-                                      <div class="col-md-12 col-sm-12">
-                                        <div class="checkbox-wrapper">
-                                          <span>
-                                              <app-car-models [carMakeId]="id" [childView]="true"></app-car-models>
-                                              <!-- <app-create-car-model [carMakeId]="id"></app-create-car-model> -->
-                                            </span>
-                                        </div>
-                                      </div>
-                                  </div>
-                                </mat-tab>
-                              </mat-tab-group>
                             </div>
                           </div>
                     </div>

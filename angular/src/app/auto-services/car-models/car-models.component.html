@@ -2,13 +2,13 @@
     <div class="card-header">
       <div class="row">
         <div class="col-md-3">
-          <h5><i class="fa fa-car"></i> {{ "CarMakes" | localize }}</h5>
+          <h5><i class="fa fa-car"></i> {{ "CarModels" | localize }}</h5>
         </div>
         <div class="col-md-9 text-right">
-          <button mat-stroked-button="primary" *ngIf="isGranted('CarMake.Create')" [routerLink]="[ '/app/car-makes/create']">
+          <button mat-stroked-button="primary" *ngIf="isGranted('CarModel.Create')" [routerLink]="[ '/app/car-models/create']">
             <i class="fa fa-plus"></i> {{ "AddNew" | localize }}
           </button>
-          <button  mat-stroked-button="dark" (click)="getCarMakes()">
+          <button  mat-stroked-button="dark" (click)="getCarModels()">
             <i class="fa fa-refresh"></i> {{ "Refresh" | localize }}
           </button>
         </div>
@@ -35,7 +35,7 @@
 
             </div>
           <div class="col-md-12 text-right p-r-25">
-            <button mat-raised-button color="primary" (click)="getCarMakes()">
+            <button mat-raised-button color="primary" (click)="getCarModels()">
               {{ "ApplyFilter" | localize }}
             </button>
           </div>
@@ -52,7 +52,7 @@
     >
       <p-table
         #dataTable
-        (onLazyLoad)="getCarMakes($event)"
+        (onLazyLoad)="getCarModels($event)"
         [value]="primengTableHelper.records"
         rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
         [paginator]="false"
@@ -61,10 +61,10 @@
         ScrollWidth="100%"
         [responsive]="primengTableHelper.isResponsive"
         [resizableColumns]="primengTableHelper.resizableColumns"
-        [(selection)]="selectedCarMakes"
+        [(selection)]="selectedCarModels"
         dataKey="id"
         [rowHover]="true"
-        scrollHeight="calc(100vh - 282px)"
+        [scrollHeight]="tableHeight"
       >
         <ng-template pTemplate="caption">
           <div class="row">
@@ -73,23 +73,23 @@
               <button
               mat-stroked-button="danger"
               (click)="delete()"
-              *ngIf="selectedCarMakes.length > 0 && isGranted('CarMake.Delete')"
+              *ngIf="selectedCarModels.length > 0 && isGranted('CarModel.Delete')"
             >
               <i class="fa fa-trash"> </i> {{ "Delete" | localize }}
             </button>
   
               <button
               mat-stroked-button="info"
-              [routerLink]="['/app/car-makes/edit', selectedCarMakes[0].id]"
-              *ngIf="selectedCarMakes.length == 1 && isGranted('CarMake.Edit')"
+              [routerLink]="['/app/car-models/edit', selectedCarModels[0].id]"
+              *ngIf="selectedCarModels.length == 1 && isGranted('CarModel.Edit')"
             >
               <i class="fa fa-edit"> </i>  {{ "Edit" | localize }}
             </button>
   
             <button
             mat-stroked-button="primary"
-            [routerLink]="['/app/car-makes/view', selectedCarMakes[0].id]"
-            *ngIf="selectedCarMakes.length == 1 && isGranted('CarMake.View')"
+            [routerLink]="['/app/car-models/view', selectedCarModels[0].id]"
+            *ngIf="selectedCarModels.length == 1 && isGranted('CarModel.View')"
           >
             <i class="fa fa-eye"> </i>  {{ "View" | localize }}
           </button>
@@ -103,7 +103,7 @@
                   name="Keyword"
                   [(ngModel)]="keyword"
                   class="form-control"
-                  (keyup.enter)="getCarMakes()"
+                  (keyup.enter)="getCarModels()"
                   [placeholder]="'Search' | localize"
                 />
                 <div class="input-group-prepend">
@@ -111,7 +111,7 @@
                     type="button"
                     mat-stroked-button="primary"
                     class="btn"
-                    (click)="getCarMakes()"
+                    (click)="getCarModels()"
                   >
                     <span class="fa fa-search" aria-hidden="true"></span>
                   </button>
@@ -203,7 +203,7 @@
         <p-paginator
           [rows]="primengTableHelper.defaultRecordsCountPerPage"
           #paginator
-          (onPageChange)="getCarMakes($event)"
+          (onPageChange)="getCarModels($event)"
           [totalRecords]="primengTableHelper.totalRecordsCount"
           [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
         >
